@@ -14,8 +14,7 @@ if ($mysqli == false) {
   //trim - обрезка пробелов, mb_strtolower - понижение регистра.
   $email = trim(mb_strtolower($_POST["email"]));
   $pass = trim($_POST["pass"]);
-//шифрование пароля
-  $pass = password_hash("$pass", PASSWORD_DEFAULT);
+
   
   $result = $mysqli->query("SELECT * FROM `users` WHERE `email`='$email'");
   //нужно преобразовать в ассоциативный массив, т.е. объект, у которого есть ключи
@@ -33,3 +32,4 @@ if ($mysqli == false) {
     echo "not_found";
   }
 }
+
