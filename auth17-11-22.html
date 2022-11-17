@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+      crossorigin="anonymous"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <title>Форма авторизации</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: blanchedalmond;
+        font-family: "Roboto Mono", monospace;
+      }
+
+      h1 {
+        font-weight: 700;
+        color: green;
+      }
+
+      form {
+        transform: translateY(0px);
+        filter: drop-shadow(1px 2px 4px hsl(0deg, 0%, 0%, 0.2));
+      }
+
+      form:focus-within {
+        transform: translateY(-4px);
+        filter: drop-shadow(1px 2px 4px hsl(0deg, 20%, 0%, 0.4));
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+        color: green;
+      }
+      .key {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Авторизация пользователя</h1>
+      <div class="col-md-5 mx-auto mt-4">
+        <!-- <form action="php/auth16-11-22_obr.php" method="POST"> -->
+        <!-- по событию onsubmit запускается функция sendFormи туда передается ЭТА this форма. Форма полетит в тело запроса, fetch отправит запрос на сервер, на стороне сервера эти данные можем поймать -->
+        <!-- При отправке формы происходит перезагрузка страницы - стандартное поведение браузера. Для того, чтобы не происходила перезагрузка страницы,отключаем поведение браузера по умолчанию добавляем  return false-->
+        <form onsubmit="sendFormUser(this); return false;">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span class="material-symbols-outlined"> mail </span>
+              </div>
+            </div>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="E-mail"
+              required
+              name="email"
+            />
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span class="material-symbols-outlined"> key </span>
+              </div>
+            </div>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Пароль"
+              id="formPass"
+              required
+              name="pass"
+            />
+
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span
+                  onmousedown="formPass.type='text'; this.nextElementSibling.hidden=false; this.hidden=true;"
+                  class="material-symbols-outlined key"
+                >
+                  &nbsp; visibility
+                </span>
+
+                <span
+                  class="material-symbols-outlined key"
+                  hidden
+                  onmouseup="formPass.type='password'; this.previousElementSibling.hidden=false; this.hidden=true;"
+                >
+                  &nbsp; visibility_off
+                </span>
+              </div>
+            </div>
+          </div>
+          <p id="info"></p>
+
+          <input
+            type="submit"
+            class="btn btn-lg btn-success btn-block"
+            value="Авторизоваться"
+          />
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // асинхронная функция, которая отправляет форму через запрос серверу
+      async function sendFormUser(form) {
+        //вызываем метод fetch, передав туда url, к которому мы хотим обратиться и куда направляем запрос, и [options] - наши данные, которые мы отправляем: name,lastname,email,pass из инпутов
+        // для того, чтобы эта функция выполнялась не мгновенно (чтобы ничего не блокировалось), переменная response будет доступна только тогда, когда выполнится запрос fetch
+        // ответ от сервера после запроса кладем в переменную response
+        let response = await fetch("php/auth17-11-22_obr.php", {
+          //указываем, каким методом мы отправляем и что именно
+          method: "POST",
+          // объект FormData позволяет нам практическив автоматическом режиме сформировать тело запроса, передав туда все инпуты, которые есть в нашей форме.
+          body: new FormData(form),
+        });
+        let result = await response.text();
+
+        if (result == "ok") {
+          alert("Успешно авторизован");
+        } else {
+          //вывод сообщения на экран через тег <p> c id = "info"
+          alert("Такого пользователя не существует");
+        }
+      }
+    </script>
+
+    <!-- Дополнительный JavaScript; выберите один из двух! -->
+
+    <!-- Вариант 1: пакет jQuery и Bootstrap (включает Popper) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Вариант 2: Отдельные JS для Popper и Bootstrap -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
