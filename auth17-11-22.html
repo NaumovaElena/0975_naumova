@@ -141,7 +141,8 @@
         let result = await response.text();
 
         if (result == "ok") {
-          alert("Успешно авторизован");
+          //alert("Успешно авторизован");
+          location.href = "lk.php";
         } else {
           //вывод сообщения на экран через тег <p> c id = "info"
           alert("Такого пользователя не существует");

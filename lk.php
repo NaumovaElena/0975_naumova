@@ -16,17 +16,48 @@
         p {
             font-size: 1.2rem;
         }
+        input {
+          font-size: 1.2rem;
+          font-weight: 500;
+        }
     </style>
   </head>
   <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-3 shadow-sm">Личный кабинет</h1>
-        <p>Имя: <?php echo$_SESSION["name"];?></p>
+        <h1 class="text-center mb-3 shadow-sm text-success">Личный кабинет</h1>
+        <p>Имя: &nbsp; <span><?php echo$_SESSION["name"];?></span>
+        <span class="edit-buttons btn btn-danger ml-5">Изменить</span>
+        <span class="save-buttons btn btn-success ml-5" hidden>Сохранить</span>
+        <span class="cancel-buttons btn btn-info ml-2" hidden>Отменить</span>
+      </p>
         <!-- второй вариант записи php функции -->
-        <p>Фамилия: <?= $_SESSION["lastname"]?>;</p>
-        <p>E-mail: <?php echo$_SESSION["email"];?></p>
+        <p>Фамилия: &nbsp; <span><?= $_SESSION["lastname"];?></span>
+        <span class="edit-buttons btn btn-danger ml-5">Изменить</span>
+        <span class="save-buttons btn btn-success ml-5"hidden>Сохранить</span>
+        <span class="cancel-buttons btn btn-info ml-2"hidden>Отменить</span>
+      </p>
+        <p>E-mail: &nbsp; <?php echo$_SESSION["email"];?></p>
         <p>Id: <?php echo$_SESSION["id"];?></p>
     </div>
+
+    <script>
+      let edit_buttons = document.querySelectorAll(".edit-buttons");
+      let save_buttons = document.querySelectorAll(".save-buttons");
+      let cancel_buttons = document.querySelectorAll(".cancel-buttons");
+
+      for(let i = 0; i < edit_buttons.length; i++) {
+        let inputValue = edit_buttons[i].previousElementSibling.innerText;
+        edit_buttons[i].addEventListener("click", ()=> {
+         
+          edit_buttons[i].previousElementSibling.innerHTML = `<input type= "text" value= "${inputValue}">`;
+          save_buttons[i].hidden = false;
+          cancel_buttons[i].hidden = false;
+          edit_buttons[i].hidden = true;
+        });
+      }
+
+
+    </script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
